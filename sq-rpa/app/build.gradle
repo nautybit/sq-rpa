@@ -42,6 +42,15 @@ android {
     namespace 'com.sq.rpa'
 }
 
+// 添加kapt配置，解决JDK模块访问问题
+kapt {
+    correctErrorTypes true
+    useBuildCache true
+    javacOptions {
+        option("-Xmaxerrs", 500)
+    }
+}
+
 dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
