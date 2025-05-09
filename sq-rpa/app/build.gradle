@@ -5,11 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 33
+    buildToolsVersion "33.0.2"
     defaultConfig {
         applicationId "com.sq.rpa"
         minSdkVersion 24
-        targetSdkVersion 34
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
