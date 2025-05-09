@@ -22,6 +22,8 @@
 - Gradle 7.4.2
 - Android Gradle Plugin 7.2.2
 
+> **注意**：如果在构建过程中遇到 JDK 版本兼容性问题，请参考 [JDK 版本配置指南](JDK_SETUP_GUIDE.md)。
+
 ## 技术栈
 
 - Kotlin
