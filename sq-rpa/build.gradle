@@ -6,7 +6,11 @@ buildscript {
         room_version = '2.5.2'
         koin_version = '3.2.0'
     }
+    // 使用阿里云镜像
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
         google()
         mavenCentral()
     }
@@ -27,7 +31,11 @@ if (gradleJavaVersion != JavaVersion.VERSION_1_8) {
 }
 
 allprojects {
+    // 使用阿里云镜像
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
         google()
         mavenCentral()
     }
