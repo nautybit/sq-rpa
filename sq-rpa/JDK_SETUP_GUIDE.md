@@ -15,7 +15,7 @@ Your build is currently configured to use incompatible Java 21.x.x and Gradle 7.
 
 ### 方案1：使用Java 21并升级Gradle（推荐）
 
-项目已更新为使用Gradle 8.5和Android Gradle Plugin 8.0.0，这些版本与Java 21兼容。如果你正在使用Java 21（如Android Studio最新版自带的JDK），这是最简单的解决方案。
+项目已更新为使用Gradle 8.12和Android Gradle Plugin 8.2.0，这些版本与Java 21兼容。如果你正在使用Java 21（如Android Studio最新版自带的JDK），这是最简单的解决方案。
 
 只需确保：
 1. 使用最新的项目代码
@@ -60,10 +60,21 @@ org.gradle.java.home=/path/to/java8
 2. 在Build窗口中查看Gradle输出
 3. 确认使用的Java版本和Gradle版本是兼容的
 
+## 缓存清理（如遇问题）
+
+如果更新配置后仍然遇到错误，可能需要清理缓存：
+
+1. 关闭Android Studio
+2. 执行项目根目录下的`clean_gradle_cache.sh`脚本：
+   ```bash
+   ./clean_gradle_cache.sh
+   ```
+3. 重启Android Studio并选择"File > Invalidate Caches / Restart..."
+
 ## 项目兼容性说明
 
 当前项目配置：
-- 支持Java 17-21 + Gradle 8.5 + AGP 8.0.0
+- 支持Java 17-21 + Gradle 8.12 + AGP 8.2.0
 - 代码使用Java 8兼容的语法特性
 - UI使用Jetpack Compose 1.3.0
 

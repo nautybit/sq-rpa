@@ -19,8 +19,8 @@
 - Android Studio
 - Java 17-21（更新支持高版本Java）或Java 8（向下兼容）
 - Kotlin 1.7.10
-- Gradle 8.5（与Java 21兼容）
-- Android Gradle Plugin 8.0.0
+- Gradle 8.12（与Java 21兼容）
+- Android Gradle Plugin 8.2.0
 
 > **注意**：如果在构建过程中遇到 JDK 版本兼容性问题，请参考 [JDK 版本配置指南](JDK_SETUP_GUIDE.md)。
 
