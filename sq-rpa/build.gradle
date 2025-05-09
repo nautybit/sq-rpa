@@ -3,7 +3,7 @@ buildscript {
     ext {
         kotlin_version = '1.9.10'
         compose_version = '1.5.4'
-        room_version = '2.6.1'
+        room_version = '2.5.2'
         koin_version = '3.5.0'
     }
     repositories {
@@ -20,6 +20,15 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+    }
+    
+    // 全局配置Java编译选项
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += [
+            '--add-exports', 'jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED',
+            '--add-exports', 'jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED',
+            '--add-exports', 'jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED'
+        ]
     }
 }
 

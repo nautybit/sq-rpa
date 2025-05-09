@@ -13,6 +13,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        // 添加JVM参数到所有javac调用
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                    "room.schemaLocation": "$projectDir/schemas".toString(),
+                    "room.incremental": "true"
+                ]
+            }
+        }
     }
     
     buildTypes {
@@ -29,6 +39,11 @@ android {
     
     kotlinOptions {
         jvmTarget = '17'
+        freeCompilerArgs += [
+            "-Xjvm-default=all",
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
+        ]
     }
     
     buildFeatures {
@@ -46,8 +61,15 @@ android {
 kapt {
     correctErrorTypes true
     useBuildCache true
+    includeCompileClasspath = false
     javacOptions {
         option("-Xmaxerrs", 500)
+        // 添加JVM参数
+        option("--add-exports", "jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED")
+        option("--add-exports", "jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED")
+        option("--add-exports", "jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED")
+        option("--add-exports", "jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED")
+        option("--add-exports", "jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED")
     }
 }
 
@@ -72,10 +94,11 @@ dependencies {
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
     
-    // Room for local database
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    // Room for local database - 降级版本
+    def room_version_downgraded = "2.5.2"
+    implementation "androidx.room:room-runtime:$room_version_downgraded"
+    implementation "androidx.room:room-ktx:$room_version_downgraded"
+    kapt "androidx.room:room-compiler:$room_version_downgraded"
     
     // Networking
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
