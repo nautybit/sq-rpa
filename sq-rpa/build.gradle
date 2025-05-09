@@ -21,15 +21,6 @@ allprojects {
         google()
         mavenCentral()
     }
-    
-    // 全局配置Java编译选项
-    tasks.withType(JavaCompile) {
-        options.compilerArgs += [
-            '--add-exports', 'jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED',
-            '--add-exports', 'jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED',
-            '--add-exports', 'jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED'
-        ]
-    }
 }
 
 task clean(type: Delete) {
