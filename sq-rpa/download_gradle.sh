@@ -3,7 +3,7 @@
 # 设置Gradle版本
 GRADLE_VERSION="7.4.2"
 GRADLE_ZIP="gradle-${GRADLE_VERSION}-bin.zip"
-DOWNLOAD_URL="https://mirrors.aliyun.com/gradle/gradle-${GRADLE_VERSION}-bin.zip"
+DOWNLOAD_URL="https://mirrors.cloud.tencent.com/gradle/gradle-${GRADLE_VERSION}-bin.zip"
 
 # 创建临时目录
 TEMP_DIR="/tmp/gradle_download"
@@ -13,7 +13,7 @@ cd $TEMP_DIR
 echo "===== 开始手动下载Gradle ${GRADLE_VERSION} ====="
 
 # 下载Gradle
-echo "1. 正在从阿里云镜像下载Gradle ${GRADLE_VERSION}..."
+echo "1. 正在从腾讯云镜像下载Gradle ${GRADLE_VERSION}..."
 curl -L -o $GRADLE_ZIP $DOWNLOAD_URL
 
 # 检查下载是否成功
@@ -28,7 +28,7 @@ GRADLE_DIST_DIR="$GRADLE_HOME/wrapper/dists/gradle-${GRADLE_VERSION}-bin"
 mkdir -p "$GRADLE_DIST_DIR"
 
 # 生成一个唯一的哈希目录名（与Gradle Wrapper相同的逻辑）
-HASH_VALUE=$(echo -n "https\://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" | shasum | cut -d ' ' -f 1)
+HASH_VALUE=$(echo -n "https\://mirrors.cloud.tencent.com/gradle/gradle-${GRADLE_VERSION}-bin.zip" | shasum | cut -d ' ' -f 1)
 HASH_DIR="$GRADLE_DIST_DIR/$HASH_VALUE"
 mkdir -p "$HASH_DIR"
 
