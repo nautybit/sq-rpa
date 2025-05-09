@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 基础颜色 -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#888888</color>
+    <color name="light_gray">#EEEEEE</color>
+    
+    <!-- 应用主题颜色 -->
+    <color name="primary">#4CAF50</color>
+    <color name="primary_light">#80E27E</color>
+    <color name="primary_dark">#087F23</color>
+    <color name="accent">#FF9800</color>
+    <color name="accent_dark">#C66900</color>
+    
+    <!-- 背景和文本颜色 -->
+    <color name="background">#F5F5F5</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    
+    <!-- 功能颜色 -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FFC107</color>
+    <color name="error">#F44336</color>
+    <color name="info">#2196F3</color>
+</resources> 
