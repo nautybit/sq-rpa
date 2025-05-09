@@ -17,10 +17,10 @@
 ## 开发环境要求
 
 - Android Studio
-- Java 8（项目已降级适配Java 8，参见 [Java 8 兼容性说明](JAVA8_COMPATIBILITY_NOTE.md)）
+- Java 17-21（更新支持高版本Java）或Java 8（向下兼容）
 - Kotlin 1.7.10
-- Gradle 7.4.2
-- Android Gradle Plugin 7.2.2
+- Gradle 8.5（与Java 21兼容）
+- Android Gradle Plugin 8.0.0
 
 > **注意**：如果在构建过程中遇到 JDK 版本兼容性问题，请参考 [JDK 版本配置指南](JDK_SETUP_GUIDE.md)。
 

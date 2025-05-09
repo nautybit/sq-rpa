@@ -2,7 +2,7 @@
 
 ## 问题描述
 
-松鼠RPA项目使用 Gradle 7.4.2，该版本与 Java 21 不兼容。当你使用较新版本的 JDK (Java 21) 时，会出现以下错误：
+松鼠RPA项目原本使用 Gradle 7.4.2，该版本与 Java 21 不兼容。当你使用较新版本的 JDK (Java 21) 时，会出现以下错误：
 
 ```
 Caused by: org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
@@ -11,54 +11,60 @@ Your build is currently configured to use incompatible Java 21.x.x and Gradle 7.
 
 ## 解决方案
 
-### 方案1：配置项目使用 Java 8 或 Java 11 (推荐)
+我们提供了两种方案来解决这个问题：
 
-1. 查找系统中已安装的 JDK 版本：
+### 方案1：使用Java 21并升级Gradle（推荐）
 
-   **Mac/Linux**:
-   ```bash
-   /usr/libexec/java_home -V
-   ```
+项目已更新为使用Gradle 8.5和Android Gradle Plugin 8.0.0，这些版本与Java 21兼容。如果你正在使用Java 21（如Android Studio最新版自带的JDK），这是最简单的解决方案。
 
-   **Windows**:
-   ```
-   dir "C:\Program Files\Java"
-   # 或者
-   dir "C:\Program Files (x86)\Java"
-   ```
+只需确保：
+1. 使用最新的项目代码
+2. 让Android Studio使用其内置JDK
+3. 正常同步和构建项目
 
-2. 在 `gradle.properties` 文件中添加以下配置，指向 Java 8 或 Java 11：
+### 方案2：使用Java 8或Java 11并降级Gradle
 
+如果你需要使用旧版本的Java，可以将项目配置为使用Gradle 7.4.2：
+
+1. 修改`gradle/wrapper/gradle-wrapper.properties`：
    ```properties
-   # Mac 路径示例
-   org.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk1.8.0_251.jdk/Contents/Home
-   
-   # Windows 路径示例
-   # org.gradle.java.home=C:\\Program Files\\Java\\jdk1.8.0_251
+   distributionUrl=https\://services.gradle.org/distributions/gradle-7.4.2-bin.zip
    ```
 
-### 方案2：安装 Java 8 或 Java 11
+2. 修改`build.gradle`中的Android Gradle Plugin版本：
+   ```gradle
+   classpath 'com.android.tools.build:gradle:7.2.2'
+   ```
 
-如果你的系统中没有 Java 8 或 Java 11，可以下载并安装：
+3. 配置Android Studio使用Java 8或11：
+   - 打开**File > Settings > Build, Execution, Deployment > Build Tools > Gradle**
+   - 在"Gradle JDK"下拉菜单中选择Java 8或11
+   - 如果没有这些版本，使用JDK Manager安装
 
-- [Amazon Corretto (OpenJDK)](https://aws.amazon.com/corretto/)
-- [AdoptOpenJDK](https://adoptopenjdk.net/)
-- [Oracle JDK](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
+### 方案3：在gradle.properties中配置JDK路径
 
-安装后，按照方案1的步骤配置 `gradle.properties`。
+如果你有特定版本的JDK需要使用，可以在`gradle.properties`中配置：
 
-### 方案3：Android Studio 中配置 Gradle JDK
+```properties
+# 使用Java 8
+org.gradle.java.home=/path/to/java8
 
-1. 打开 Android Studio
-2. 进入 File > Settings > Build, Execution, Deployment > Build Tools > Gradle
-3. 在 "Gradle JDK" 下拉菜单中，选择 Java 8 或 Java 11
-4. 点击 "Apply" 和 "OK"
+# 或使用Java 17
+# org.gradle.java.home=/path/to/java17
+```
 
 ## 验证配置
 
-配置完成后，重启 Android Studio 并尝试同步项目。如果仍然有问题，检查 Gradle 输出，确认它使用的是正确版本的 JDK。
+配置完成后：
+1. 重启Android Studio
+2. 在Build窗口中查看Gradle输出
+3. 确认使用的Java版本和Gradle版本是兼容的
 
-## 注意事项
+## 项目兼容性说明
 
-- 请勿升级 Gradle 版本，因为项目已经针对 Gradle 7.4.2 和 Java 8 进行了优化
-- 项目已配置为使用 Java 8 特性，确保编译和运行环境都兼容 
+当前项目配置：
+- 支持Java 17-21 + Gradle 8.5 + AGP 8.0.0
+- 代码使用Java 8兼容的语法特性
+- UI使用Jetpack Compose 1.3.0
+
+如有任何问题，请提交issue或参考Android Gradle兼容性矩阵。 
