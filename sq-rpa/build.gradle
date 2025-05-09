@@ -11,7 +11,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.0'
+        classpath 'com.android.tools.build:gradle:7.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -20,10 +20,10 @@ buildscript {
 def gradleJavaVersion = org.gradle.internal.jvm.Jvm.current().javaVersion
 logger.lifecycle("当前使用的Java版本: $gradleJavaVersion")
 
-// 如果Java版本 < 17，给出警告
-if (!gradleJavaVersion.isJava17Compatible()) {
-    logger.warn("警告: 当前使用的Java版本 $gradleJavaVersion 可能与Gradle 8.12不兼容")
-    logger.warn("建议使用Java 17")
+// 如果不是Java 8，给出警告
+if (gradleJavaVersion != JavaVersion.VERSION_1_8) {
+    logger.warn("警告: 当前项目配置为使用Java 8，但检测到使用的是 $gradleJavaVersion")
+    logger.warn("请确保在gradle.properties中正确设置org.gradle.java.home指向Java 8")
 }
 
 allprojects {
