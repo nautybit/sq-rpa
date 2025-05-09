@@ -60,6 +60,31 @@ kapt {
     javacOptions {
         option("-Xmaxerrs", 500)
     }
+    // 添加JVM参数以解决Java模块系统限制问题
+    arguments {
+        arg("kapt.kotlin.generated", "${layout.buildDirectory}/generated/source/kapt/main")
+    }
+}
+
+// 为Gradle添加Java模块系统兼容性配置
+tasks.withType(JavaCompile).configureEach {
+    options.fork = true
+    options.forkOptions.jvmArgs += [
+        '--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED',
+        '--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED',
+        '--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED',
+        '--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED',
+        '--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED',
+        '--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED'
+    ]
+}
+
+// 为Kotlin编译添加相同的JVM参数
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions.freeCompilerArgs += [
+        "-Xjvm-default=all"
+    ]
+    kotlinOptions.javaParameters = true
 }
 
 dependencies {
