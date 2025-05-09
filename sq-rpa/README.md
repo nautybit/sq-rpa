@@ -17,18 +17,19 @@
 ## 开发环境要求
 
 - Android Studio
-- Java 11 或更高版本（参见 [Java 8 兼容性说明](JAVA8_COMPATIBILITY_NOTE.md)）
-- Kotlin 1.9.10
-- Gradle 8.12
+- Java 8（项目已降级适配Java 8，参见 [Java 8 兼容性说明](JAVA8_COMPATIBILITY_NOTE.md)）
+- Kotlin 1.7.10
+- Gradle 7.4.2
+- Android Gradle Plugin 7.2.2
 
 ## 技术栈
 
 - Kotlin
-- Jetpack Compose (UI)
-- Room (数据库)
-- Koin (依赖注入)
+- Jetpack Compose 1.3.0 (UI)
+- Room 2.5.2 (数据库)
+- Koin 3.2.0 (依赖注入)
 - Android 辅助功能服务 (AccessibilityService)
-- Rhino (JavaScript 引擎)
+- Rhino 1.7.13 (JavaScript 引擎)
 
 ## 项目结构
 

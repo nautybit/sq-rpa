@@ -127,12 +127,17 @@ com.sq.rpa/
 
 | 依赖库 | 版本 | 用途 |
 |-------|------|------|
-| Kotlin | 1.8.x | 编程语言 |
-| AndroidX Core | 1.9.x | Android核心库 |
-| Room | 2.5.x | 数据库ORM |
-| Rhino | 1.7.14 | JavaScript引擎 |
-| Material Components | 1.8.0 | UI组件库 |
-| Kotlin Coroutines | 1.6.x | 异步编程 |
+| Kotlin | 1.7.10 | 编程语言 |
+| AndroidX Core | 1.8.0 | Android核心库 |
+| Room | 2.5.2 | 数据库ORM |
+| Compose | 1.3.0 | UI框架 |
+| Rhino | 1.7.13 | JavaScript引擎 |
+| Material Components | 1.6.0 | UI组件库 |
+| Kotlin Coroutines | 1.6.1 | 异步编程 |
+| Koin | 3.2.0 | 依赖注入 |
+| Retrofit | 2.9.0 | 网络请求库 |
+| OkHttp | 4.9.0 | HTTP客户端 |
+| Gson | 2.9.0 | JSON解析库 |
 
 ## 核心组件详解
 
