@@ -4,7 +4,7 @@ echo "===== 开始修复Gradle下载问题 ====="
 
 # 设置变量
 GRADLE_VERSION="8.5"
-GRADLE_DOWNLOAD_URL="https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
+GRADLE_DOWNLOAD_URL="https://mirrors.aliyun.com/gradle/gradle-${GRADLE_VERSION}-bin.zip"
 GRADLE_DIR="$HOME/.gradle/wrapper/dists/gradle-${GRADLE_VERSION}-bin"
 GRADLE_ZIP="$GRADLE_DIR/gradle-${GRADLE_VERSION}-bin.zip"
 HASH_DIR=$(find "$GRADLE_DIR" -type d -name "*" -not -name "gradle-${GRADLE_VERSION}-bin" 2>/dev/null | head -1)
