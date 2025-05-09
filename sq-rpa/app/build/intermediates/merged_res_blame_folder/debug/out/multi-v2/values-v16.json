@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.sq.rpa.app-mergeDebugResources-61:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/Users/UFO/.gradle/caches/transforms-3/087930b2ac186b8adbaa36d4a9fa7d2a/transformed/appcompat-1.6.1/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                },
+                {
+                    "source": "/Users/UFO/.gradle/caches/transforms-3/a5a529c730d44b665974141ebbcc96dc/transformed/core-1.12.0/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                }
+            ]
+        }
+    ]
+}
