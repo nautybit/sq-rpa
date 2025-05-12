@@ -23,30 +23,47 @@
 - **Android Gradle Plugin**: 7.1.3
 - **Kotlin**: 1.6.10
 - **Compose**: 1.1.1
+- **Room**: 2.4.2
 - **compileSdk/targetSdk**: 31
-- **Android Studio**: Electric Eel (2022.1.1) 或更高版本
+- **Android Studio**: 推荐使用 Electric Eel (2022.1.1) 或更高版本
 
 ## 首次构建
 
-在首次构建项目前，请运行以下步骤：
+在首次构建项目前，请执行以下步骤：
 
-1. 确保已安装 Java 8 (JDK 1.8)
+1. 确保已安装 Java 8 (JDK 1.8)，可使用以下命令验证：
+   ```bash
+   java -version
+   ```
+   输出应该显示 `java version "1.8.0_xxx"`
+
 2. 执行项目根目录下的环境准备脚本:
    ```bash
    chmod +x prepare_env.sh
    ./prepare_env.sh
    ```
-3. 在 Android Studio 中打开项目，等待 Gradle 同步完成
-4. 如果遇到问题，请选择 `File > Invalidate Caches / Restart...`
+   此脚本将清理缓存并预下载 Gradle 7.4.2
+
+3. 检查 `gradle.properties` 中的 JDK 路径是否正确：
+   ```properties
+   org.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk1.8.0_xxx.jdk/Contents/Home
+   ```
+   根据您的 Java 8 安装路径修改此值
+
+4. 在 Android Studio 中打开项目，等待 Gradle 同步完成
+
+5. 如果遇到同步问题，请尝试：
+   - 选择 `File > Invalidate Caches / Restart...`
+   - 确保项目使用 Java 8 构建（查看 Build 输出日志）
 
 ## 技术栈
 
-- Kotlin
-- Jetpack Compose (UI)
-- Room (数据库)
-- Koin (依赖注入)
+- Kotlin 1.6.10
+- Jetpack Compose 1.1.1 (UI)
+- Room 2.4.2 (数据库)
+- Koin 3.1.5 (依赖注入)
 - Android 辅助功能服务 (AccessibilityService)
-- Rhino (JavaScript 引擎)
+- Rhino 1.7.13 (JavaScript 引擎)
 
 ## 项目结构
 
@@ -67,32 +84,48 @@
 3. 配置自动回复规则
 4. 打开微信，应用将自动监听并回复消息
 
+## 故障排除
+
+如果遇到构建问题：
+
+1. **确保使用正确的 Java 版本**：
+   - 项目必须使用 Java 8
+   - 检查并修改 `gradle.properties` 中的 `org.gradle.java.home` 路径
+
+2. **清理缓存**:
+   ```bash
+   ./prepare_env.sh
+   ```
+   或手动执行：
+   ```bash
+   rm -rf ~/.gradle/caches/
+   rm -rf .gradle/ build/ app/build/
+   ```
+
+3. **Gradle 下载问题**：
+   - 脚本使用阿里云镜像下载 Gradle 7.4.2
+   - 如果仍有网络问题，可手动下载并放置在:
+     `~/.gradle/wrapper/dists/gradle-7.4.2-bin/`
+
+4. **Android Studio 问题**:
+   - 选择 `File > Invalidate Caches / Restart...`
+   - 确保 Android Studio 中 Gradle JDK 设置指向 Java 8
+
+5. **检查构建日志**：
+   - 注意 Gradle 和 Java 版本信息
+   - 查找 "当前使用的Java版本" 日志行
+
+## 高级配置
+
+如需更多信息，请参考:
+- `JAVA8_COMPATIBILITY_NOTE.md`: Java 8 兼容性详情
+- `JDK_SETUP_GUIDE.md`: JDK 配置指南
+- `app/docs/`: 项目文档目录
+
 ## 贡献指南
 
 欢迎提交 Pull Request 或提出 Issue。
 
 ## 许可证
 
-[MIT License](LICENSE)
-
-## 故障排除
-
-如果遇到构建问题：
-
-1. 确保使用正确的 Java 版本:
-   - 项目需要 Java 8
-   - 确认 gradle.properties 中的 `org.gradle.java.home` 路径正确
-
-2. 清理缓存:
-   ```bash
-   rm -rf ~/.gradle/caches/
-   rm -rf .gradle/ build/ app/build/
-   ```
-
-3. 检查 Gradle 下载:
-   - Gradle 7.4.2 应该从阿里云镜像下载
-   - 如果下载失败，运行 prepare_env.sh 脚本
-
-4. 如遇 Android Studio 问题:
-   - 选择 `File > Invalidate Caches / Restart...`
-   - 确保 Android Studio 中 Gradle JDK 设置指向 Java 8 
+[MIT License](LICENSE) 

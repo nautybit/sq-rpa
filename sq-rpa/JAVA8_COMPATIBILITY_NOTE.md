@@ -1,48 +1,48 @@
 # Java 8 兼容性说明
 
-为了使项目与 Java 8 兼容，我们已经进行了以下修改：
+为了使项目与 Java 8 兼容，我们已经进行了以下修改和配置：
 
-## 1. 降级 Gradle 插件版本
+## 1. 配置 Gradle 插件版本
 
-在根目录的 `build.gradle` 文件中，已将 Android Gradle 插件版本降级到 7.2.2：
+在根目录的 `build.gradle` 文件中，已将 Android Gradle 插件版本设置为 7.1.3：
 
 ```gradle
 buildscript {
     // ...
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath 'com.android.tools.build:gradle:7.1.3'
         // ...
     }
 }
 ```
 
-## 2. 降级 Gradle 版本
+## 2. 配置 Gradle 版本
 
-在 `gradle/wrapper/gradle-wrapper.properties` 文件中，已将 Gradle 版本降级到 7.4.2：
+在 `gradle/wrapper/gradle-wrapper.properties` 文件中，已将 Gradle 版本设置为 7.4.2：
 
 ```properties
-distributionUrl=https\://services.gradle.org/distributions/gradle-7.4.2-bin.zip
+distributionUrl=https\://mirrors.aliyun.com/gradle/gradle-7.4.2-bin.zip
 ```
 
-## 3. 调整 Kotlin 和 Compose 版本
+## 3. 适配 Kotlin 和 Compose 版本
 
-在根目录的 `build.gradle` 文件中，已将 Kotlin 版本设置为 1.7.10，以与 Gradle 插件兼容：
+在根目录的 `build.gradle` 文件中，已将 Kotlin 和 Compose 版本设置为与 Java 8 兼容的版本：
 
 ```gradle
 buildscript {
     ext {
-        kotlin_version = '1.7.10'
-        compose_version = '1.3.0'
-        room_version = '2.5.2'
-        koin_version = '3.2.0'
+        kotlin_version = '1.6.10'
+        compose_version = '1.1.1'
+        room_version = '2.4.2'
+        koin_version = '3.1.5'
     }
     // ...
 }
 ```
 
-## 4. 降级依赖版本
+## 4. 兼容性依赖版本
 
-在 `app/build.gradle` 文件中，已降级各种依赖的版本：
+在 `app/build.gradle` 文件中，已配置与 Java 8 兼容的依赖版本：
 
 ```gradle
 dependencies {
@@ -51,10 +51,19 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
     
     // AndroidX
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.activity:activity-compose:1.5.1'
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    
+    // Compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    
+    // Room
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
     
     // Networking
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -65,14 +74,9 @@ dependencies {
     // JSON parsing
     implementation 'com.google.code.gson:gson:2.9.0'
     
-    // WebSocket
-    implementation 'org.java-websocket:Java-WebSocket:1.5.2'
-    
     // JavaScript Engine for scripting
     implementation 'org.mozilla:rhino:1.7.13'
-    
-    // UI Components
-    implementation 'com.google.android.material:material:1.6.0'
+    // ...其他依赖
 }
 ```
 
@@ -95,26 +99,91 @@ android {
 }
 ```
 
-## 6. 修改 Gradle 属性
+## 6. 配置 Gradle 属性
 
-在 `gradle.properties` 文件中，我们删除了过时的配置选项：
+在 `gradle.properties` 文件中，已配置正确的Java 8路径和网络设置：
 
 ```properties
-# 移除过时的kapt配置
-# kapt.include.compile.classpath=false
+# 指定使用Java 8
+org.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk1.8.0_251.jdk/Contents/Home
 
-# 移除可能与当前环境不兼容的配置
-# android.suppressUnsupportedCompileSdk=34
+# 网络设置 - 增加超时和重试次数
+org.gradle.internal.http.connectionTimeout=120000
+org.gradle.internal.http.socketTimeout=120000
+org.gradle.internal.repository.max.retries=10
+org.gradle.internal.repository.initial.backoff=500
+
+# 使用阿里云镜像仓库
+maven.url.aliyun.general=https://maven.aliyun.com/repository/public/
+maven.url.aliyun.google=https://maven.aliyun.com/repository/google/
+maven.url.aliyun.gradle=https://maven.aliyun.com/repository/gradle-plugin/
+```
+
+## 7. 配置存储库镜像
+
+在根目录的 `build.gradle` 文件中，已配置国内镜像源以提高下载速度：
+
+```gradle
+allprojects {
+    // 使用阿里云镜像
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
+        google()
+        mavenCentral()
+    }
+}
+```
+
+## 8. Java 版本检查
+
+在根目录的 `build.gradle` 文件中，已添加Java版本检查逻辑：
+
+```gradle
+// 检查Gradle使用的JDK版本
+def gradleJavaVersion = org.gradle.internal.jvm.Jvm.current().javaVersion
+logger.lifecycle("当前使用的Java版本: $gradleJavaVersion")
+
+// 检查Java版本是否兼容
+if (gradleJavaVersion != JavaVersion.VERSION_1_8) {
+    logger.warn("警告: 当前项目配置为使用Java 8，但检测到使用的是 $gradleJavaVersion")
+    logger.warn("请确保在gradle.properties中正确设置org.gradle.java.home指向Java 8")
+}
+```
+
+## 9. 环境准备脚本
+
+项目提供 `prepare_env.sh` 脚本用于准备构建环境：
+
+```bash
+#!/bin/bash
+# 脚本会检查Java版本
+# 清理缓存
+# 预下载Gradle 7.4.2
 ```
 
 ## 注意事项
 
-即使进行了上述修改，由于项目使用了较新版本的库，在某些环境下仍可能遇到兼容性问题。如果遇到问题，请尝试以下操作：
+1. **必须使用Java 8**：本项目严格要求Java 8环境，使用其他版本可能导致构建失败。
 
-1. 在Android Studio中选择"File"→"Invalidate Caches / Restart"
-2. 确保你的Android Studio版本与项目兼容（建议使用Android Studio Arctic Fox或Bumblebee版本）
-3. 确保你的JDK版本是Java 8
+2. **Android Studio设置**：打开项目后，请检查Android Studio的Gradle JDK设置是否指向Java 8。
+
+3. **依赖版本**：本项目使用的库版本都经过精心选择，以确保与Java 8兼容。请勿随意升级依赖版本。
+
+4. **Room数据库**：项目使用的Room 2.4.2版本已经过测试，可在Java 8环境下正常工作。
+
+5. **构建速度**：使用配置的阿里云镜像和网络设置，可大幅提高依赖下载速度。
+
+## 如果遇到问题
+
+如果在构建过程中遇到问题：
+
+1. 执行 `prepare_env.sh` 脚本清理缓存并预下载Gradle
+2. 确保 `gradle.properties` 中的Java 8路径正确
+3. 在Android Studio中选择"File"→"Invalidate Caches / Restart"
+4. 检查构建日志中的Java版本是否显示为1.8
 
 ## 当前状态
 
-目前项目已成功适配Java 8环境，可以在Java 8环境下正常构建和运行。如果在构建过程中遇到任何问题，请参考上述调整或提交issue。 
+目前项目已成功适配Java 8环境，可以在Java 8环境下正常构建和运行。所有依赖库和配置都经过测试，确保可以稳定工作。 

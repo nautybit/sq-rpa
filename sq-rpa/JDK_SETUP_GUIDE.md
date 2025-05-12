@@ -2,7 +2,7 @@
 
 ## 问题描述
 
-松鼠RPA项目在使用不同JDK版本时可能会遇到兼容性问题。原版项目使用 Gradle 7.4.2，该版本与 Java 21 不兼容。当你使用较新版本的 JDK (Java 21) 时，会出现以下错误：
+松鼠RPA项目需要特定的JDK版本才能正常构建。项目当前配置为使用 Gradle 7.4.2，该版本与 Java 8 最为兼容。使用较高版本的 JDK 时，可能会出现以下错误：
 
 ```
 Caused by: org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
@@ -11,86 +11,115 @@ General error during conversion: Unsupported class file major version 65
 java.lang.IllegalArgumentException: Unsupported class file major version 65
 ```
 
-## 解决方案
+## 推荐配置
 
-我们提供了以下方案来解决这些问题（按推荐顺序排列）：
+本项目强烈建议使用以下配置：
 
-### 方案1：升级到Gradle 8.5（推荐）
+- **Java 8** (JDK 1.8)
+- **Gradle 7.4.2**
+- **Android Gradle Plugin 7.1.3**
+- **Kotlin 1.6.10**
 
-我们已经将项目配置升级为支持Java 21：
-- Gradle 8.5
-- Android Gradle Plugin 8.0.0
-- 使用Android Studio内置的JDK
+## JDK配置步骤
 
-操作步骤：
-1. 确保使用最新的项目代码（已更新gradle-wrapper.properties和build.gradle）
-2. 在Android Studio中，确保使用内置JDK（不要手动指定JDK路径）
-3. 如果遇到Gradle下载问题，运行项目根目录下的`fix_gradle_download.sh`脚本：
-   ```bash
-   chmod +x fix_gradle_download.sh
-   ./fix_gradle_download.sh
-   ```
+### 1. 检查Java版本
 
-### 方案2：降级到Java 8或Java 11
+首先确认您的系统中是否安装了Java 8：
 
-如果你希望使用原始的Gradle 7.4.2版本，可以：
-1. 修改`gradle/wrapper/gradle-wrapper.properties`文件，将distributionUrl改为：
-   ```
-   distributionUrl=https\://services.gradle.org/distributions/gradle-7.4.2-bin.zip
-   ```
-2. 修改`build.gradle`文件，将Android Gradle Plugin版本改为7.2.2：
-   ```
-   classpath 'com.android.tools.build:gradle:7.2.2'
-   ```
-3. 在`gradle.properties`中指定Java 8或Java 11的路径：
-   ```
-   org.gradle.java.home=/path/to/your/java8or11
-   ```
+```bash
+java -version
+```
 
-### 方案3：配置JDK路径
+如果输出显示为 `java version "1.8.0_xxx"`，则您已有Java 8。
 
-如果你需要指定特定的JDK版本，可以在`gradle.properties`中设置：
+### 2. 下载安装Java 8（如果需要）
 
-对于Java 8（与Gradle 7.4.2一起使用）：
+如果您没有安装Java 8，您可以从以下地址下载：
+
+- [AdoptOpenJDK 8](https://adoptium.net/temurin/releases/?version=8)
+- [Oracle JDK 8](https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)（需要Oracle账号）
+
+### 3. 配置项目使用Java 8
+
+在项目的 `gradle.properties` 文件中，设置 Java 8 的路径：
+
 ```properties
+# 对于macOS用户
 org.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk1.8.0_xxx.jdk/Contents/Home
+
+# 对于Windows用户
+# org.gradle.java.home=C:\\Program Files\\Java\\jdk1.8.0_xxx
+
+# 对于Linux用户
+# org.gradle.java.home=/usr/lib/jvm/java-8-openjdk
 ```
 
-对于Java 17（与Gradle 8.5一起使用）：
-```properties
-org.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home
+请将路径替换为您实际的Java 8安装位置。
+
+### 4. 使用prepare_env.sh脚本准备环境
+
+项目提供了环境准备脚本，执行以下命令运行：
+
+```bash
+chmod +x prepare_env.sh
+./prepare_env.sh
 ```
 
-## 验证配置
+此脚本将：
+- 检查Java版本
+- 清理缓存文件
+- 预下载Gradle 7.4.2（使用阿里云镜像）
+
+### 5. 验证配置
 
 配置完成后：
 1. 重启Android Studio
 2. 在Build窗口中查看Gradle输出
-3. 确认使用的是正确的Java版本
-
-## 缓存清理（如遇问题）
-
-如果更新配置后仍然遇到错误，请尝试清理缓存：
-
-1. 关闭Android Studio
-2. 删除Gradle缓存：
-   ```bash
-   rm -rf $HOME/.gradle/caches/
-   rm -rf $HOME/.gradle/wrapper/dists/
+3. 确认日志中显示使用的是Java 8版本：
    ```
-3. 删除项目构建文件：
-   ```bash
-   rm -rf .gradle/
-   rm -rf build/
-   rm -rf app/build/
+   当前使用的Java版本: 1.8.0_xxx
    ```
-4. 重启Android Studio并选择"File > Invalidate Caches / Restart..."
 
-## 项目兼容性说明
+## 常见问题排查
 
-当前项目配置：
-- 支持Java 17-21 + Gradle 8.5 + AGP 8.0.0
-- 代码使用Java 8兼容的语法特性
-- UI使用Jetpack Compose 1.3.0
+### Java版本错误
 
-如有任何问题，请提交issue或参考[Android Gradle兼容性矩阵](https://developer.android.com/studio/releases/gradle-plugin#compatibility)。 
+如果看到以下警告：
+
+```
+警告: 当前项目配置为使用Java 8，但检测到使用的是 xxx
+```
+
+请检查：
+1. `gradle.properties` 中的 `org.gradle.java.home` 路径是否正确
+2. Android Studio的Gradle JDK设置（File > Settings > Build, Execution, Deployment > Build Tools > Gradle）
+
+### Gradle下载失败
+
+如果Gradle下载失败，您可以：
+1. 重新运行 `prepare_env.sh` 脚本
+2. 手动下载Gradle 7.4.2：
+   - 从 [阿里云镜像](https://mirrors.aliyun.com/gradle/gradle-7.4.2-bin.zip) 下载
+   - 放置在 `~/.gradle/wrapper/dists/gradle-7.4.2-bin/` 目录下
+
+### 构建缓存问题
+
+如果更新配置后仍遇到错误，可清理缓存：
+
+```bash
+rm -rf $HOME/.gradle/caches/
+rm -rf .gradle/
+rm -rf build/
+rm -rf app/build/
+```
+
+然后重启Android Studio并选择"File > Invalidate Caches / Restart..."
+
+## 高级用户选项
+
+如果您需要使用不同版本的JDK，请注意：
+
+1. 使用Java 11需要更新Gradle版本至少到7.5+
+2. 使用Java 17或更高版本需要Gradle 8.0+和Android Gradle Plugin 8.0+
+
+但请注意，这些变更需要同时修改多个依赖版本，可能导致兼容性问题。强烈建议保持使用推荐的Java 8配置。 
