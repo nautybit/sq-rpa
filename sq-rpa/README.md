@@ -16,23 +16,37 @@
 
 ## 开发环境要求
 
-- Android Studio
-- Java 17-21（推荐）或 Java 8（向下兼容）
-- Kotlin 1.7.10
-- Gradle 8.5（与Java 21兼容）
-- Android Gradle Plugin 8.0.0
+⚠️ **重要**: 本项目使用以下固定版本组合，以确保兼容性：
 
-> **注意**：如果在构建过程中遇到 JDK 版本兼容性问题，请参考 [JDK 版本配置指南](JDK_SETUP_GUIDE.md)。
-> 如果遇到Gradle下载问题，请运行项目根目录下的`fix_gradle_download.sh`脚本。
+- **Java**: 必须使用 Java 8 (JDK 1.8)
+- **Gradle**: 7.4.2 (自动下载)
+- **Android Gradle Plugin**: 7.1.3
+- **Kotlin**: 1.6.10
+- **Compose**: 1.1.1
+- **compileSdk/targetSdk**: 31
+- **Android Studio**: Electric Eel (2022.1.1) 或更高版本
+
+## 首次构建
+
+在首次构建项目前，请运行以下步骤：
+
+1. 确保已安装 Java 8 (JDK 1.8)
+2. 执行项目根目录下的环境准备脚本:
+   ```bash
+   chmod +x prepare_env.sh
+   ./prepare_env.sh
+   ```
+3. 在 Android Studio 中打开项目，等待 Gradle 同步完成
+4. 如果遇到问题，请选择 `File > Invalidate Caches / Restart...`
 
 ## 技术栈
 
 - Kotlin
-- Jetpack Compose 1.3.0 (UI)
-- Room 2.5.2 (数据库)
-- Koin 3.2.0 (依赖注入)
+- Jetpack Compose (UI)
+- Room (数据库)
+- Koin (依赖注入)
 - Android 辅助功能服务 (AccessibilityService)
-- Rhino 1.7.13 (JavaScript 引擎)
+- Rhino (JavaScript 引擎)
 
 ## 项目结构
 
@@ -59,4 +73,26 @@
 
 ## 许可证
 
-[MIT License](LICENSE) 
+[MIT License](LICENSE)
+
+## 故障排除
+
+如果遇到构建问题：
+
+1. 确保使用正确的 Java 版本:
+   - 项目需要 Java 8
+   - 确认 gradle.properties 中的 `org.gradle.java.home` 路径正确
+
+2. 清理缓存:
+   ```bash
+   rm -rf ~/.gradle/caches/
+   rm -rf .gradle/ build/ app/build/
+   ```
+
+3. 检查 Gradle 下载:
+   - Gradle 7.4.2 应该从阿里云镜像下载
+   - 如果下载失败，运行 prepare_env.sh 脚本
+
+4. 如遇 Android Studio 问题:
+   - 选择 `File > Invalidate Caches / Restart...`
+   - 确保 Android Studio 中 Gradle JDK 设置指向 Java 8 
